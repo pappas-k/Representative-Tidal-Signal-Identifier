@@ -115,9 +115,9 @@ R_{avg} = \frac{rank(M1) + rank(M2)}{2}
 
 Using the same tidal ranges, define an “available head energy” proxy per tidal cycle:
 
-\[
+$
 E_{max} = \frac{1}{2}\rho g (\Delta h)^2
-\]
+$
 
 with:
 
