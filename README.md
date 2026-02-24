@@ -1,142 +1,210 @@
-# Representative Month Selection for Tidal Range Modelling
+# Representative Month Identifier for UK Tide Gauges
 
-This project identifies **representative tidal months** for multiple UK tide-gauge locations. The approach reconstructs long-term synthetic tidal water-level signals using harmonic constituents, then slides a 29.5-day window (lunar month) over the full nodal cycle (~18.61 years) and finds the lunar onth whose statistical behaviour best matches the long-term tidal record.
-
-Representative months are determined for:
-
-* **Tidal Ranges** (median, interquartile range, Hm0)
-* **Potential Energy** (per-cycle energy distribution and total energy)
-
-This allows hydrodynamic or energy simulations to be performed over short windows while preserving long-period tidal variability.
+A quantitative pipeline to identify a single “representative month” window that best matches the statistical and energetic characteristics of the full 18.61 year lunar nodal cycle at a tide gauge location. The selected window is intended for computationally efficient modelling studies where simulating the full nodal cycle is impractical.
 
 ---
 
-## Required Python Packages
+## Scientific objective
 
-Ensure the following libraries are installed:
+Tidal statistics at a site vary over the 18.61 year lunar nodal cycle. Many coastal engineering and energy studies only simulate weeks to months of boundary forcing, which can bias estimates of:
 
-```
-numpy
-pandas
-scipy
-```
+- typical tidal range (median)
+- variability (interquartile range)
+- sea level oscillation energy proxies
 
-### Input description
-
-| Input                               | Description                                                                |
-| ----------------------------------- | -------------------------------------------------------------------------- |
-| `dictionary_tidal_gauge_data_UK.py` | Contains gauge file paths and start times                                  |
-| `functions.py`                      | Must include peak detection, tidal reconstruction, PE, Hm0, RMSE functions |
-| Tide gauge files                    | Raw elevation or water-level data                                          |
+This project reconstructs a long tidal elevation signal from gauge derived harmonic constituents, then performs an exhaustive sliding window search to find the window whose distributional properties best represent the nodal cycle targets.
 
 ---
 
-## Main Modules
+## Method summary
 
-### `representative_month.py`
+### 1) Constituent extraction from tide gauge records
 
-Functions included:
+For each gauge CSV:
 
-| Function                   | Purpose                                                          |
-| -------------------------- | ---------------------------------------------------------------- |
-| `average_metrics_ranges()` | Computes tidal range statistics for all windows                  |
-| `average_metrics_energy()` | Computes energy metrics for all windows                          |
-| `process_locations()`      | Automates analysis for multiple locations and constituent counts |
+1. Load elevations (15 min sampling assumed in the extraction routine).
+2. Filter out flagged or implausible values.
+3. Perform harmonic analysis on a predefined set of tidal constituents using `uptide`.
+
+Output: a dataframe of constituents sorted by amplitude:
+
+- `Constituents`
+- `Amplitude`
+- `Phase`
+
+### 2) Nodal cycle reconstruction
+
+Using the top *k* constituents (e.g. 2, 4, 8, 12, 16), reconstruct a synthetic elevation series over a full nodal cycle.
+
+Core parameters used by the main script:
+
+- Nodal cycle length: **18.61 years**
+- Reference tidal period (M2): **T = 12.42 h**
+- Reconstruction time step: **dt = 108 s**
+- Samples per tidal cycle:  
+  \[
+  N_c = \frac{T \cdot 3600}{dt} = \frac{12.42 \cdot 3600}{108} = 414
+  \]
+- Tidal cycles per nodal cycle:  
+  \[
+  N_{nodal} = \left\lfloor \frac{18.61 \cdot 365.25 \cdot 24}{12.42} \right\rfloor = 13134
+  \]
+
+The reconstructed signal is stored as an `Nx2` array:
+
+- column 0: time in seconds from a reference origin (`2002-01-01 00:00:00`)
+- column 1: reconstructed elevation (m)
+
+### 3) Sliding window definition
+
+A “representative month” is defined as a fixed number of tidal cycles:
+
+- Default window: **58 cycles**
+- Duration: \(58 \times 12.42 = 720.36\) hours \(= 30.015\) days
+
+Windows are evaluated at cycle aligned offsets (step = 1 tidal cycle).
+
+Total number of candidate windows (default):
+
+\[
+N_{win} = N_{nodal} - 58 + 1 = 13077
+\]
+
+### 4) Metrics and ranking
+
+Two parallel selection methods are implemented.
+
+#### A) Tidal range representativeness
+
+Compute high waters and low waters using peak detection, then form tidal ranges.
+
+Nodal targets:
+
+- \(P50_{nodal}\): median tidal range
+- \(IQR_{nodal}\): \(P75 - P25\) of tidal range
+- \(Hm0_{nodal}\): significant sea level oscillation height proxy  
+  \[
+  Hm0 = 4 \sigma(\eta)
+  \]
+
+For each window:
+
+- \(P50\), \(IQR\), \(Hm0\) for the window
+- Metric 1 (distribution match):  
+  \[
+  M1 = 0.5 \cdot RMSE(P50, P50_{nodal}) + 0.5 \cdot RMSE(IQR, IQR_{nodal})
+  \]
+- Metric 2 (variability proxy match):  
+  \[
+  M2 = RMSE(Hm0, Hm0_{nodal})
+  \]
+
+Scalar RMSE is implemented as:
+
+\[
+RMSE(a,b)=\sqrt{(a-b)^2}=|a-b|
+\]
+
+Each window is ranked by `M1` and `M2` (lower is better). The selected representative window minimises the mean rank:
+
+\[
+R_{avg} = \frac{rank(M1) + rank(M2)}{2}
+\]
+
+#### B) Energy based representativeness
+
+Using the same tidal ranges, define an “available head energy” proxy per tidal cycle:
+
+\[
+E_{max} = \frac{1}{2}\rho g (\Delta h)^2
+\]
+
+with:
+
+- \(\rho = 1021~kg/m^3\)
+- \(g = 9.81~m/s^2\)
+
+In `representative_month.py`, this is converted to **MWh** via \(3.6\times10^6~J/MWh\).
+
+Nodal targets:
+
+- \(P50_{E,nodal}\): median of \(E_{max}\)
+- \(IQR_{E,nodal}\): IQR of \(E_{max}\)
+- \(PE_{nodal}\): power density style proxy computed from the elevation series:  
+  \[
+  PE = \frac{\rho g}{\Delta t} \int \eta(t)^2 dt
+  \]
+  (as implemented in `functions.PE`, returned in Wh/m² units)
+
+For each window:
+
+- \(P50_E\), \(IQR_E\)
+- \(PE_{window}\)
+- Metric 1:  
+  \[
+  M1 = 0.5 \cdot RMSE(P50_E, P50_{E,nodal}) + 0.5 \cdot RMSE(IQR_E, IQR_{E,nodal})
+  \]
+- Metric 2:  
+  \[
+  M2 = RMSE(PE_{window}, PE_{nodal})
+  \]
+
+Ranking and selection uses the same average rank criterion as above.
 
 ---
 
-## Methodology Summary
+## Inputs
 
-### 1. Constituent Extraction
+### Tide gauge file registry
 
-* Harmonic constituents are extracted from observed sea-level data
-* Synthetic signals reconstructed over **18.61 years** using top **2, 4, 8, 12, and 16** constituents
+`inputs/dictionary_tidal_gauge_data_UK.py` defines a dictionary:
 
-### 2. Sliding Window (Representative Month)
+- key: location name
+- value: `(csv_path, start_date)`
 
-* A window of ~30 days (**58 tidal cycles**) moves through the full record
-* For each window, compute two metric families:
+This allows batch processing of multiple UK gauges with consistent metadata.
 
-#### A. Range-Based Metrics
+### Tide gauge CSV format assumption
 
-* Median range
-* Interquartile range (IQR)
-* Sea-state: `Hm0`
-* RMSE relative to nodal baseline
+The extraction routine expects:
 
-#### B. Energy-Based Metrics
+- elevation in column index 11 (0 based in `np.loadtxt` usage)
+- QC flag in column index 12
+- 2 header rows
+- 15 min sampling implied by:
+  \[
+  t = 0, 900, 1800, \dots
+  \]
 
-* Per-cycle potential energy: `0.5 * ρ * g * R²`
-* Median and IQR of energy distribution
-* Total potential energy for window
-* RMSE relative to baseline
-
-### 3. Ranking
-
-* Each window receives two ranks
-* Final score = average of both ranks
-* Best (lowest-ranked) window = Representative Month
-
-### 4. Output
-
-* Representative start time in seconds and datetime
-* Summary table for all locations and constituent truncations
-* Optional CSV export
-
----
-
-## Running the Script
-
-```
-python representative_months_refactor.py
-```
-
-This will:
-
-* Process default 46 UK gauge locations
-* Use 30-day windows
-* Evaluate 2, 4, 8, 12, and 16 constituents
-* Print summary of representative months
-
-To save results:
-
-```python
-summary_df.to_csv("representative_month_summary.csv", index=False)
-```
+If your CSV differs, edit `extract_constituents_from_tidegauge_file` accordingly.
 
 ---
 
 ## Outputs
 
-* Window-by-window statistics
-* Representative month per location and constituent count
-* Sorted summary by tidal amplitude
+Running the main script produces a summary table with one row per (location, k) pair:
 
-Example summary structure:
+- `LOCATION`
+- `MAX AMPLITUDE` (proxy: sum of top 12 constituent amplitudes)
+- `K_CONS` (number of constituents used in reconstruction)
+- `START TIME RANGES` (seconds from origin)
+- `START DATETIME RANGES` (absolute datetime)
+- `START TIME ENERGY`
+- `START DATETIME ENERGY`
 
-| LOCATION  | K_CONS | START DATETIME RANGES | START DATETIME ENERGY |
-| --------- | ------ | --------------------- | --------------------- |
-| Avonmouth | 16     | 2007-04-08 00:00:00   | 2007-04-12 00:00:00   |
-| Newport   | 12     | 2011-06-03 00:00:00   | 2011-06-04 00:00:00   |
-
----
-
-## Applications
-
-* Run short hydrodynamic simulations with nodal-scale reliability
-* CAPEX, LCOE, or environmental studies requiring representative forcing
-* Model sensitivity testing
+Optionally, save to CSV (commented in the script).
 
 ---
 
-## Future Enhancements
+## Repository structure (expected)
 
-* Automated plots for range and energy distributions
-* GPU-accelerated window iteration
-* Region-based representative windows
-* Uncertainty or sensitivity analysis
+The main script imports using package style paths:
 
----
-
-This README describes the Representative Month Selection workflow for tidal range power plant modelling and resource assessment.
-
+```text
+project_root/
+  representative_month.py
+  modules/
+    functions.py
+  inputs/
+    dictionary_tidal_gauge_data_UK.py
+    <tide gauge csv files...>
