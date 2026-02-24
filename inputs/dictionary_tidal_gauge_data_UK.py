@@ -1,0 +1,55 @@
+import datetime
+from pathlib import Path
+
+
+
+dictionary_gauge_data = {
+ "ABERDEEN" : ['inputs/BODC_tidal_elevation_data/Aberdeen_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ "AVONMOUTH": ['inputs/BODC_tidal_elevation_data/Avonmouth_20040101_20120430.csv',datetime.datetime(2004, 1, 1, 0, 0, 0)],
+ 'BANGOR'    : ['inputs/BODC_tidal_elevation_data/Bangor_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'BARMOUTH'  : ['inputs/BODC_tidal_elevation_data/Barmouth_20050101_20180430.csv', datetime.datetime(2005, 1, 1, 0, 0, 0) ],
+ 'BOURNEMOUTH' : ['inputs/BODC_tidal_elevation_data/Bournemouth_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)], 
+ 'CROMER': ['inputs/BODC_tidal_elevation_data/Cromer_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'DEVONPORT': ['inputs/BODC_tidal_elevation_data/Devonport_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0) ],
+ 'DOVER': ['inputs/BODC_tidal_elevation_data/Dover_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'FELIXSTONE': ['inputs/BODC_tidal_elevation_data/Felixstowe_20020101_20111231.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'FISHGUARD': ['inputs/BODC_tidal_elevation_data/Fishguard_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'HARWICH': ['inputs/BODC_tidal_elevation_data/Harwich_20040101_20180430.csv', datetime.datetime(2004, 1, 1, 0, 0, 0)],
+ 'HEYSHAM': ['inputs/BODC_tidal_elevation_data/Heysham_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'HINKLEY_POINT': ['inputs/BODC_tidal_elevation_data/Hinkley_Point_20080101_20180430.csv', datetime.datetime(2008, 1, 1, 0, 0, 0)],
+ 'HOLYHEAD': ['inputs/BODC_tidal_elevation_data/Holyhead_20020101_20180430.csv',datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'ILFRACOMBE': ['inputs/BODC_tidal_elevation_data/Ilfracombe_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'IMMINGHAM': ['inputs/BODC_tidal_elevation_data/Immingham_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'KINLOCHBERVIE': ['inputs/BODC_tidal_elevation_data/Kinlochbervie_20030101_20180430.csv', datetime.datetime(2003, 1, 1, 0, 0, 0)],
+ 'LEITH': ['inputs/BODC_tidal_elevation_data/Leith_20020208_20180430.csv', datetime.datetime(2002, 2, 8, 0, 0, 0)],
+ 'LERWICK': ['inputs/BODC_tidal_elevation_data/Lerwick_20030101_20180430.csv', datetime.datetime(2003, 1, 1, 0, 0, 0)],
+ 'LIVERPOOL': ['inputs/BODC_tidal_elevation_data/Liverpool,_Gladstone_Dock_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'LLANDUDNO': ['inputs/BODC_tidal_elevation_data/Llandudno_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'LOWESTOFT': ['inputs/BODC_tidal_elevation_data/Lowestoft_20020101_20180430.csv',datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'MILFORD_HAVEN': ['inputs/BODC_tidal_elevation_data/Milford_Haven_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'MILLPORT': ['inputs/BODC_tidal_elevation_data/Millport_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'MORAY_FIRTH': ['inputs/BODC_tidal_elevation_data/Moray_Firth_20020101_20041231.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ "MUMBLES"   : ['inputs/BODC_tidal_elevation_data/Mumbles_20020101_20140630.csv',   datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'NEWHAVEN': ['inputs/BODC_tidal_elevation_data/Newhaven_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'NEWLYN': ['inputs/BODC_tidal_elevation_data/Newlyn_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'NEWPORT': ['inputs/BODC_tidal_elevation_data/Newport_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'NORTH_SHIELDS': ['inputs/BODC_tidal_elevation_data/North_Shields_20140801_20180430.csv', datetime.datetime(2014, 8, 1, 0, 0, 0)],
+ 'PORT_ELLEN': ['inputs/BODC_tidal_elevation_data/Port_Ellen__Islay__20020101_20111231.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'PORT_ERIN': ['inputs/BODC_tidal_elevation_data/Port_Erin_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'PORTBURY': ['inputs/BODC_tidal_elevation_data/Portbury_20140601_20180430.csv', datetime.datetime(2014, 6, 1, 0, 0, 0)],
+ 'PORTPATRICK': ['inputs/BODC_tidal_elevation_data/Portpatrick_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'PORTRUSH': ['inputs/BODC_tidal_elevation_data/Portrush_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'PORTSMOUTH': ['inputs/BODC_tidal_elevation_data/Portsmouth_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'SHEERNESS': ['inputs/BODC_tidal_elevation_data/Sheerness_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'ST_HELIER': ['inputs/BODC_tidal_elevation_data/St._Helier__Jersey__20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'ST_MARY': ['inputs/BODC_tidal_elevation_data/St._Marys_20020101_20150630.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'STORNOWAY': ['inputs/BODC_tidal_elevation_data/Stornoway_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'TOBERMORY': ['inputs/BODC_tidal_elevation_data/Tobermory_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'ULLAPOOL': ['inputs/BODC_tidal_elevation_data/Ullapool_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'WEYMOUTH': ['inputs/BODC_tidal_elevation_data/Weymouth_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)], 
+ 'WHITBY': ['inputs/BODC_tidal_elevation_data/Whitby_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'WICK': ['inputs/BODC_tidal_elevation_data/Wick_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)],
+ 'WORKINGTON': ['inputs/BODC_tidal_elevation_data/Workington_20020101_20180430.csv', datetime.datetime(2002, 1, 1, 0, 0, 0)]
+}
+
+
