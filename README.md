@@ -22,7 +22,7 @@ This project reconstructs a long tidal elevation signal from gauge derived harmo
 
 For each gauge CSV:
 
-1. Load elevations (15 min sampling assumed in the extraction routine).
+1. Load tidal elevation time-series.
 2. Filter out flagged or implausible values.
 3. Perform harmonic analysis on a predefined set of tidal constituents using `uptide`.
 
