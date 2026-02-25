@@ -78,38 +78,43 @@ Two parallel selection methods are implemented.
 
 Compute high waters and low waters using peak detection, then form tidal ranges.
 
-Nodal targets:
+**Nodal targets:**
 
-- $P50_{nodal}$: median tidal range
-- $IQR_{nodal}$: \(P75 - P25\) of tidal range
-- \(Hm0_{nodal}\): significant sea level oscillation height proxy  
-  \[
-  Hm0 = 4 \sigma(\eta)
-  \]
+- $$P50_{nodal}$$: median tidal range  
+- $$IQR_{nodal}$$: $$(P75 - P25)$$ of tidal range  
+- $$Hm0_{nodal}$$: significant sea level oscillation height proxy  
 
-For each window:
+$$
+Hm0 = 4\,\sigma(\eta)
+$$
 
-- \(P50\), \(IQR\), \(Hm0\) for the window
-- Metric 1 (distribution match):  
-  \[
-  M1 = 0.5 \cdot RMSE(P50, P50_{nodal}) + 0.5 \cdot RMSE(IQR, IQR_{nodal})
-  \]
-- Metric 2 (variability proxy match):  
-  \[
-  M2 = RMSE(Hm0, Hm0_{nodal})
-  \]
+**For each window:**
 
-Scalar RMSE is implemented as:
+- $$P50$$, $$IQR$$, $$Hm0$$ for the window  
 
-\[
+**Metric 1 (distribution match):**
+
+$$
+M1 = 0.5 \cdot RMSE(P50, P50_{nodal}) + 0.5 \cdot RMSE(IQR, IQR_{nodal})
+$$
+
+**Metric 2 (variability proxy match):**
+
+$$
+M2 = RMSE(Hm0, Hm0_{nodal})
+$$
+
+**Scalar RMSE (for scalar arguments):**
+
+$$
 RMSE(a,b)=\sqrt{(a-b)^2}=|a-b|
-\]
+$$
 
-Each window is ranked by `M1` and `M2` (lower is better). The selected representative window minimises the mean rank:
+Each window is ranked by $$M1$$ and $$M2$$ (lower is better). The selected representative window minimises the mean rank:
 
-\[
+$$
 R_{avg} = \frac{rank(M1) + rank(M2)}{2}
-\]
+$$
 
 #### B) Energy based representativeness
 
