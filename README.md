@@ -34,7 +34,7 @@ Output: a dataframe of constituents sorted by amplitude:
 
 ### 2) Nodal cycle reconstruction
 
-Using the top *k* constituents (e.g. 2, 4, 8, 12, 16), reconstruct a synthetic elevation series over a full nodal cycle.
+Using the top $k$ constituents (e.g. 2, 4, 8, 12, 16), reconstruct a synthetic elevation series over a full nodal cycle.
 
 Core parameters used by the main script:
 
@@ -42,13 +42,13 @@ Core parameters used by the main script:
 - Reference tidal period (M2): **T = 12.42 h**
 - Reconstruction time step: **dt = 108 s**
 - Samples per tidal cycle:  
-  \[
+  $$
   N_c = \frac{T \cdot 3600}{dt} = \frac{12.42 \cdot 3600}{108} = 414
-  \]
+  $$
 - Tidal cycles per nodal cycle:  
-  \[
+  $$
   N_{nodal} = \left\lfloor \frac{18.61 \cdot 365.25 \cdot 24}{12.42} \right\rfloor = 13134
-  \]
+  $$
 
 The reconstructed signal is stored as an `Nx2` array:
 
@@ -66,9 +66,9 @@ Windows are evaluated at cycle aligned offsets (step = 1 tidal cycle).
 
 Total number of candidate windows (default):
 
-\[
+$$
 N_{win} = N_{nodal} - 58 + 1 = 13077
-\]
+$$
 
 ### 4) Metrics and ranking
 
@@ -80,8 +80,8 @@ Compute high waters and low waters using peak detection, then form tidal ranges.
 
 Nodal targets:
 
-- \(P50_{nodal}\): median tidal range
-- \(IQR_{nodal}\): \(P75 - P25\) of tidal range
+- $P50_{nodal}$: median tidal range
+- $IQR_{nodal}$: \(P75 - P25\) of tidal range
 - \(Hm0_{nodal}\): significant sea level oscillation height proxy  
   \[
   Hm0 = 4 \sigma(\eta)
