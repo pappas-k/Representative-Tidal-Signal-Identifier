@@ -1,6 +1,6 @@
 # Representative Month Identifier for UK Tide Gauges
 
-A quantitative pipeline to identify a single “representative month” window that best matches the statistical and energetic characteristics of the full 18.61 year lunar nodal cycle at a tide gauge location. The selected window is intended for computationally efficient modelling studies where simulating the full nodal cycle is impractical.
+A quantitative framework to identify a single “representative month” window that best matches the statistical and energetic characteristics of the full 18.61 year lunar nodal cycle at a tide gauge location. The selected window is intended for computationally efficient modelling studies where simulating the full nodal cycle is impractical.
 
 ---
 
