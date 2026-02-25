@@ -69,7 +69,7 @@ Windows are evaluated at cycle aligned offsets (step = 1 tidal cycle).
 Total number of candidate windows (default):
 
 $$
-N_{win} = N_{nodal} - 58 + 1 = 13077
+N' = N_{nodal} - 58 + 1 = 13077
 $$
 
 ### 4) Metrics and ranking
