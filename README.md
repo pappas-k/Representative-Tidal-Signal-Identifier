@@ -63,7 +63,6 @@ The reconstructed signal is stored as an `Nx2` array:
 A representative month is defined as a fixed number of tidal cycles:
 
 - Default window: **58 cycles**
-- Duration: $$58 \times 12.42 = 720.36~\mathrm{hours} = 30.015~\mathrm{days}$$
 
 Windows are evaluated at cycle aligned offsets (step = 1 tidal cycle).
 
