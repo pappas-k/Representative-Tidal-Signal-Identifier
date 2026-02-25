@@ -147,7 +147,7 @@ For each window:
 - Metric 1:
 
 $$
-M1 = 0.5 \times |P50_E_{window} - P50_{E,nodal}| + 0.5 \times |IQR_E_{window} - IQR_{E,nodal}|
+M1 = 0.5 \times |P50_{E,window} - P50_{E,nodal}| + 0.5 \times |IQR_{E,window} - IQR_{E,nodal}|
 $$
 
 - Metric 2:
