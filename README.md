@@ -88,7 +88,7 @@ Compute high waters and low waters using peak detection, then form tidal ranges.
 - $$Hm0_{nodal}$$: significant sea level oscillation height proxy  
 
 $$
-Hm0 = 4\,\sigma(\eta)
+Hm0 = 4\ \times \sigma(\eta)
 $$
 
 **For each window:**
