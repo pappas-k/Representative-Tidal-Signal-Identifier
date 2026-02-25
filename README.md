@@ -201,17 +201,3 @@ Running the main script produces a summary table with one row per (location, k) 
 
 Optionally, save to CSV (commented in the script).
 
----
-
-## Repository structure (expected)
-
-The main script imports using package style paths:
-
-```text
-project_root/
-  representative_month.py
-  modules/
-    functions.py
-  inputs/
-    dictionary_tidal_gauge_data_UK.py
-    <tide gauge csv files...>
