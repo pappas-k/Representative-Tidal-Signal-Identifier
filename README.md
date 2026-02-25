@@ -98,7 +98,7 @@ $$
 **Metric 1 (distribution match):**
 
 $$
-M1 = 0.5 \times |(P50_{window} - P50_{nodal}| + 0.5 \times |IQR_{window} - IQR_{nodal}|
+M1 = 0.5 \times |P50_{window} - P50_{nodal}| + 0.5 \times |IQR_{window} - IQR_{nodal}|
 $$
 
 **Metric 2 (variability proxy match):**
@@ -107,11 +107,6 @@ $$
 M2 = |Hm0_{wimdow} - Hm0_{nodal}|
 $$
 
-**Scalar RMSE (for scalar arguments):**
-
-$$
-RMSE(a,b)=\sqrt{(a-b)^2}=|a-b|
-$$
 
 Each window is ranked by $$M1$$ and $$M2$$ (lower is better). The selected representative window minimises the mean rank:
 
