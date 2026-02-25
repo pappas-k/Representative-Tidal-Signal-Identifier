@@ -34,21 +34,24 @@ Output: a dataframe of constituents sorted by amplitude:
 
 ### 2) Nodal cycle reconstruction
 
-Using the top $k$ constituents (e.g. 2, 4, 8, 12, 16), reconstruct a synthetic elevation series over a full nodal cycle.
+Using the top $$k$$ constituents (e.g. 2, 4, 8, 12, 16), reconstruct a synthetic elevation series over a full nodal cycle.
 
 Core parameters used by the main script:
 
 - Nodal cycle length: **18.61 years**
 - Reference tidal period (M2): **T = 12.42 h**
 - Reconstruction time step: **dt = 108 s**
-- Samples per tidal cycle:  
-  $$
-  N_c = \frac{T \cdot 3600}{dt} = \frac{12.42 \cdot 3600}{108} = 414
-  $$
-- Tidal cycles per nodal cycle:  
-  $$
-  N_{nodal} = \left\lfloor \frac{18.61 \cdot 365.25 \cdot 24}{12.42} \right\rfloor = 13134
-  $$
+- Samples per tidal cycle:
+
+$$
+N_c = \frac{T \cdot 3600}{dt} = \frac{12.42 \cdot 3600}{108} = 414
+$$
+
+- Tidal cycles per nodal cycle:
+
+$$
+N_{nodal} = \left\lfloor \frac{18.61 \cdot 365.25 \cdot 24}{12.42} \right\rfloor = 13134
+$$
 
 The reconstructed signal is stored as an `Nx2` array:
 
@@ -57,10 +60,10 @@ The reconstructed signal is stored as an `Nx2` array:
 
 ### 3) Sliding window definition
 
-A “representative month” is defined as a fixed number of tidal cycles:
+A representative month is defined as a fixed number of tidal cycles:
 
 - Default window: **58 cycles**
-- Duration: \(58 \times 12.42 = 720.36\) hours \(= 30.015\) days
+- Duration: $$58 \times 12.42 = 720.36~\mathrm{hours} = 30.015~\mathrm{days}$$
 
 Windows are evaluated at cycle aligned offsets (step = 1 tidal cycle).
 
