@@ -121,33 +121,38 @@ $$
 
 with:
 
-- \(\rho = 1021~kg/m^3\)
-- \(g = 9.81~m/s^2\)
+- $$\rho = 1021~\mathrm{kg/m^3}$$
+- $$g = 9.81~\mathrm{m/s^2}$$
 
-In `representative_month.py`, this is converted to **MWh** via \(3.6\times10^6~J/MWh\).
+In `representative_month.py`, this is converted to **MWh** via $$3.6\times10^6~\mathrm{J/MWh}$$.
 
 Nodal targets:
 
-- \(P50_{E,nodal}\): median of \(E_{max}\)
-- \(IQR_{E,nodal}\): IQR of \(E_{max}\)
-- \(PE_{nodal}\): power density style proxy computed from the elevation series:  
-  \[
-  PE = \frac{\rho g}{\Delta t} \int \eta(t)^2 dt
-  \]
-  (as implemented in `functions.PE`, returned in Wh/m² units)
+- $$P50_{E,nodal}$$: median of $$E_{max}$$
+- $$IQR_{E,nodal}$$: IQR of $$E_{max}$$
+- $$PE_{nodal}$$: power density style proxy computed from the elevation series:
+
+$$
+PE = \frac{\rho g}{\Delta t} \int \eta(t)^2\,dt
+$$
+
+(as implemented in `functions.PE`, returned in $$\mathrm{Wh/m^2}$$ units)
 
 For each window:
 
-- \(P50_E\), \(IQR_E\)
-- \(PE_{window}\)
-- Metric 1:  
-  \[
-  M1 = 0.5 \cdot RMSE(P50_E, P50_{E,nodal}) + 0.5 \cdot RMSE(IQR_E, IQR_{E,nodal})
-  \]
-- Metric 2:  
-  \[
-  M2 = RMSE(PE_{window}, PE_{nodal})
-  \]
+- $$P50_E$$, $$IQR_E$$
+- $$PE_{window}$$
+- Metric 1:
+
+$$
+M1 = 0.5 \cdot RMSE(P50_E, P50_{E,nodal}) + 0.5 \cdot RMSE(IQR_E, IQR_{E,nodal})
+$$
+
+- Metric 2:
+
+$$
+M2 = RMSE(PE_{window}, PE_{nodal})
+$$
 
 Ranking and selection uses the same average rank criterion as above.
 
