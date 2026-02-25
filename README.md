@@ -98,13 +98,13 @@ $$
 **Metric 1 (distribution match):**
 
 $$
-M1 = 0.5 \cdot RMSE(P50, P50_{nodal}) + 0.5 \cdot RMSE(IQR, IQR_{nodal})
+M1 = 0.5 \times |(P50_{window} - P50_{nodal}| + 0.5 \times |IQR_{window} - IQR_{nodal}|
 $$
 
 **Metric 2 (variability proxy match):**
 
 $$
-M2 = RMSE(Hm0, Hm0_{nodal})
+M2 = |Hm0_{wimdow} - Hm0_{nodal}|
 $$
 
 **Scalar RMSE (for scalar arguments):**
@@ -153,13 +153,13 @@ For each window:
 - Metric 1:
 
 $$
-M1 = 0.5 \cdot RMSE(P50_E, P50_{E,nodal}) + 0.5 \cdot RMSE(IQR_E, IQR_{E,nodal})
+M1 = 0.5 \times |P50_E_{window} - P50_{E,nodal}| + 0.5 \times |IQR_E_{window} - IQR_{E,nodal}|
 $$
 
 - Metric 2:
 
 $$
-M2 = RMSE(PE_{window}, PE_{nodal})
+M2 = |PE_{window} - PE_{nodal}|
 $$
 
 Ranking and selection uses the same average rank criterion as above.
