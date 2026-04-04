@@ -201,3 +201,22 @@ Running the main script produces a summary table with one row per (location, k) 
 
 Optionally, save to CSV (commented in the script).
 
+---
+
+## Practical application
+
+This tool was developed to support tidal range energy resource assessments, where running full 18.61-year nodal cycle simulations is computationally prohibitive. By identifying a single representative month, practitioners can reduce simulation costs while preserving the statistical and energetic characteristics of the full cycle.
+
+A key motivation is that tidal harmonic constituents and the analysis timeframe significantly affect tidal range estimates. Pappas et al. (2023) [1] demonstrated that the choice of constituents and the duration of the analysis window introduce non-negligible uncertainty in tidal range statistics relevant to tidal range energy schemes. The representative month methodology addresses this by anchoring the selected window to nodal-cycle-wide distributional targets, rather than relying on an arbitrarily chosen period.
+
+Potential use cases include:
+
+- Tidal range energy (barrage, lagoon, and dynamic tidal power) resource assessment
+- Coastal flood and storm surge modelling where tidal boundary conditions must be representative but tractable
+- Sensitivity studies requiring multiple model runs across sites
+
+---
+
+## References
+
+[1] K. Pappas, L. Mackie, I. Zilakos, A. H. van der Weijde, A. Angeloudis, "Sensitivity of tidal range assessments to harmonic constituents and analysis timeframe," *Renewable Energy*, vol. 205, pp. 125–141, 2023. https://doi.org/10.1016/j.renene.2023.01.062
